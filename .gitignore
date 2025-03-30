@@ -13,7 +13,7 @@ minsftp/build/
 minsftp/lib/
 
 # Ignore include folder
-minsftp/include/
+# minsftp/include/
 
 minsftp/x64
 
