@@ -1,0 +1,43 @@
+# Ignore Visual Studio files
+.vs/
+*.vcxproj*
+*.sln
+*.user
+*.opendb
+*.VC.db
+
+# Ignore build directory
+minsftp/build/
+
+# Ignore lib directory
+minsftp/lib/
+
+# Ignore include folder
+minsftp/include/
+
+minsftp/x64
+
+# Ignore any object or temp files
+*.obj
+*.log
+*.tmp
+*.pch
+*.idb
+
+# Ignore CMake cache/config files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Ignore backup files
+*~
+*.bak
+
+# Ignore compiled binaries
+*.exe
+*.dll
+*.lib
+*.so
+*.a
+*.out
