@@ -40,8 +40,34 @@ if (sftp.Init() == RES_OK) {
 
 ## 🛠 Build Instructions
 
-make sure you have these files inside lib\ folder:
+make sure you have the static version of these lib files for example in a lib\ folder:
 - cryptlib.lib
-- libcrypto_static.lib
+- libcrypto.lib
 - libssh2.lib
-- libssl_static.lib 
+- libssl.lib 
+
+### you can get cryptlib.lib by building it from:
+- [cryptopp](https://github.com/weidai11/cryptopp)
+
+get cryptopp release 8.9
+build it using visual studio
+after building it will be in packages\openssl_x64-windows-static\lib
+
+### you can get libcrypto.lib and libssl.lib by building openssl from source or using vcpkg:
+- [openssl](https://github.com/openssl/openssl)
+- [vcpkg](https://github.com/microsoft/vcpkg)
+
+run bootstrap-vcpkg
+then run: vcpkg install openssl
+it will build openssl for you
+then you can find libcrypto.lib and libssl.lib in buildtrees\openssl\x64-windows-rel
+
+### you can get libssh2.lib using the same methods as above:
+- [libssh2](https://github.com/libssh2/libssh2)
+- [vcpkg](https://github.com/microsoft/vcpkg)
+
+for vcpkg run: vcpkg install libssh2:x64-windows-static
+it will build libssh2 for you
+you can find libssh2.lib in packages\libssh2_x64-windows-static\lib
+
+you don't need to add these files to the linker because minsftp.h will import them using #pragma comment

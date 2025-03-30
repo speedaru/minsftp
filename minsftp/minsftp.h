@@ -54,9 +54,9 @@ namespace fs = std::filesystem;
 
 // include lib files
 #pragma comment(lib, "cryptlib.lib")
-#pragma comment(lib, "libcrypto_static.lib")
+#pragma comment(lib, "libcrypto.lib")
 #pragma comment(lib, "libssh2.lib")
-#pragma comment(lib, "libssl_static.lib")
+#pragma comment(lib, "libssl.lib")
 
 constexpr size_t BUFFER_SIZE = 4096;
 

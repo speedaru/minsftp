@@ -12,9 +12,7 @@ minsftp/build/
 # Ignore lib directory
 minsftp/lib/
 
-# Ignore include folder
-# minsftp/include/
-
+// Ignore wtv
 minsftp/x64
 
 # Ignore any object or temp files
