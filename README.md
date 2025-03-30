@@ -29,3 +29,19 @@ if (sftp.Init() == RES_OK) {
     sftp.SftpMove("/remote/path/backup.txt", "/remote/path/newname.txt");
     sftp.Shutdown();
 }
+```
+
+## 📦 Requirements
+
+- libss2
+- OpenSSL (for libssh2)
+- Windows (WinSock2) or POSIX-compatible system
+- C++ 17 or later
+
+## 🛠 Build Instructions
+
+make sure you have these files inside lib\ folder:
+- cryptlib.lib
+- libcrypto_static.lib
+- libssh2.lib
+- libssl_static.lib 
