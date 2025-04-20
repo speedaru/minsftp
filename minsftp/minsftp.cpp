@@ -100,10 +100,10 @@ bool Client::IsValidFormat(const char* format) {
 minsftp::minsftp(Client _client, AUTH_TYPE _authType, void* authVal) {
     switch (_authType) {
     case AUTH_PASSWORD:
-        password = *reinterpret_cast<a_password*>(authVal);
+        password = *reinterpret_cast<auth_password*>(authVal);
         break;
     case AUTH_PUBKEY:
-        pubkey = *reinterpret_cast<a_pubkey*>(authVal);
+        pubkey = *reinterpret_cast<auth_pubkey*>(authVal);
         break;
     case AUTH_KEYBOARD:
         //empty
@@ -127,6 +127,12 @@ MINSFTP_RES minsftp::Init() {
     
     WSADATA wsadata;
     
+    // check if auth type is set
+    if (authType == AUTH_NOT_SET) {
+        fprintf(stderr, "not auth type selected\n");
+        return RES_NOT_INITIALIZED;
+    }
+
     // initialize Winsock library for windows
     rc = WSAStartup(MAKEWORD(2, 0), &wsadata);
     if (rc) {
@@ -216,7 +222,7 @@ MINSFTP_RES minsftp::Init() {
         switch (authType) {
         case AUTH_PASSWORD:
             // authenticate using password
-            if (libssh2_userauth_password(session, client.User(), password.password)) {
+            if (libssh2_userauth_password(session, client.User(), password.password.c_str())) {
                 fprintf(stderr, "Authentication by password failed.\n");
                 Shutdown();
                 return RES_AUTH_PASS_FAILED;
@@ -241,13 +247,13 @@ MINSFTP_RES minsftp::Init() {
             int res = libssh2_userauth_publickey_frommemory(session,
                 client.User(), client.user.length(), // user
                 NULL, NULL, // public key
-                reinterpret_cast<const char*>(pubkey.privKeyData.data()), pubkey.privKeyData.size(), pubkey.passphrase); // priv key
+                reinterpret_cast<const char*>(pubkey.privKeyData.data()), pubkey.privKeyData.size(), pubkey.passphrase.c_str()); // priv key
             
             if (res) {
                 fprintf(
                     stderr,
                     "authentication by public key failed.\nuser: %s userlen: %llu\npassphrase %s\n",
-                    client.User(), client.user.length(), pubkey.passphrase);
+                    client.User(), client.user.length(), pubkey.passphrase.c_str());
                 Shutdown();
                 return RES_AUTH_PUBKEY_FAILED;
             }

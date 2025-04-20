@@ -32,9 +32,9 @@ namespace fs = std::filesystem;
 
 #include "utils.h"
 
-#ifdef WIN32
-#define write(f, b, c)  write((f), (b), (unsigned int)(c))
-#endif
+//#ifdef WIN32
+//#define write(f, b, c)  write((f), (b), (unsigned int)(c))
+//#endif
 
 #ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
@@ -61,6 +61,7 @@ namespace fs = std::filesystem;
 constexpr size_t BUFFER_SIZE = 4096;
 
 enum AUTH_TYPE {
+	AUTH_NOT_SET = -1,
 	AUTH_PASSWORD,
 	AUTH_PUBKEY,
 	AUTH_KEYBOARD,
@@ -88,14 +89,13 @@ enum MINSFTP_RES {
 };
 
 
-// a_ stands for auth
-struct a_pubkey {
+struct auth_pubkey {
 	FILE_DATA privKeyData;
-	LPCSTR passphrase;
+	std::string passphrase;
 };
 
-struct a_password {
-	LPCSTR password;
+struct auth_password {
+	std::string password;
 };
 
 class Client {
@@ -118,11 +118,11 @@ private:
 
 class minsftp {
 private:
-	AUTH_TYPE authType;
+	AUTH_TYPE authType{};
 
 	Client client;
-	a_pubkey pubkey{};
-	a_password password{};
+	auth_pubkey pubkey{};
+	auth_password password{};
 
 	bool libssh2_initialized{ false };
 	libssh2_socket_t sock{};
@@ -131,6 +131,8 @@ private:
 	LIBSSH2_SFTP_HANDLE* sftp_handle{ nullptr };
 
 public:
+    minsftp() {}
+	// authVal will be copied so no worries about dangling pointers
 	minsftp(Client _client, AUTH_TYPE _authType, void* authVal);
 	~minsftp();
 
